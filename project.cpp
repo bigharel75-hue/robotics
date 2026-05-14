@@ -6,8 +6,8 @@
 #define white 1024
 #define motorL0 5
 #define motorL1 9
-#define motorR0 6
-#define motorR1 10
+#define motorR0 10
+#define motorR1 6
 #define CENTIMETERS_TO_DRIVE 255/50.0
 #define tcrtL A1
 #define tcrtR A2
@@ -35,15 +35,22 @@ void setup() {
   motorR.begin();
   Serial.println("finished serial");
 }
-
 void loop() 
 {
-  int distance = readUltraSonic()*(CENTIMETERS_TO_DRIVE - 10);
-  motorL.move(distance);
-  motorR.move(distance);
+  int distance = readUltraSonic();
+  int error = (distance-15)*CENTIMETERS_TO_DRIVE;
+  motorR.move(error);
+  motorL.move(error);
+  //motorR.move((error < 0)?-100:error);
+  //motorL.move((error < 0)?-100:error);
   Serial.print("distance: ");
   Serial.println(distance);
-  delay(10);
+  Serial.print("error: ");
+  Serial.println(error);
+  Serial.print("CENTIMETERS_TO_DRIVE: ");
+  Serial.println(CENTIMETERS_TO_DRIVE);
+  
+  delay(100);
 }
 
 int readUltraSonic()
@@ -58,8 +65,4 @@ int readUltraSonic()
   duration = pulseIn(echoPin, HIGH);
   distance = duration * 0.034 / 2;
   return distance;
-}
-int getGoodDistance()
-{
-  
 }
