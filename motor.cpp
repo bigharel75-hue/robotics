@@ -15,14 +15,14 @@ class motor{
     }
 
     void move(int speed) {
-      if (speed > 255) speed = 255;
+      if (speed > 255) speed = 255;//checks if the speed is bigger than the max speed or smaller than the min speed
       if (speed < -255 ) speed = -255;
-      if (speed > 0) {
+      if (speed > 0) {//checks if to drive forward or backwards
         analogWrite(pin0, speed);
         analogWrite(pin1, LOW);
       }
       else {
-        analogWrite(pin1, -speed);
+        analogWrite(pin1, -speed);//drive -speed cause the speed is lower than zero
         analogWrite(pin0, LOW);
       }
     }
